@@ -144,8 +144,8 @@ button {
   }
 
   html, body {
-    width: 98mm;
-    height: 28mm;
+    width: 100mm;
+    height: 30mm;
     overflow: hidden;
     margin: 0 !important;
     padding: 0 !important;
