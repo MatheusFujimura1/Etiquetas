@@ -121,7 +121,7 @@ button{
 
 @media print {
   html, body {
-    zoom: 1.09; /* ← ajuste aqui o valor da escala */
+    zoom: 1.00; /* ← ajuste aqui o valor da escala */
     margin: 0 !important;
     padding: 0 !important;
     width: 100mm;
