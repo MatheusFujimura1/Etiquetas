@@ -119,16 +119,34 @@ button{
   margin-left: 2mm;
 }
 
-@media print{
-  html, body{
-    width: 100mm;
-    height: 30mm;
+@media print {
+  html, body {
+    zoom: 1.09; /* ← ajuste aqui o valor da escala */
     margin: 0 !important;
     padding: 0 !important;
-    overflow: hidden;
-    transform: scale(1.00);
-    transform-origin: top left;
+    width: 100mm;
+    height: 30mm;
   }
+
+  body * {
+    visibility: hidden;
+  }
+
+  .print-only, .print-only * {
+    visibility: visible;
+  }
+
+  .print-only {
+    position: absolute;
+    inset: 0;
+    margin: 0;
+  }
+
+  @page {
+    size: 100mm 30mm;
+    margin: 0 !important;
+  }
+}
   body *{ visibility: hidden; }
   .print-only, .print-only *{ visibility: visible; }
   .print-only{ position: absolute; inset: 0; margin: 0; }
