@@ -146,10 +146,10 @@ button {
   .print-only {
     position: absolute;
     top: 1mm;
-    left: 0;
+    left: 1mm;
     width: 100mm;
     height: 30mm;
-    margin: 1mm;
+    margin: 0;
     padding: 0;
   }
 }
