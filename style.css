@@ -125,14 +125,14 @@ button {
   }
 
   html, body {
-  width: 98mm;           /* 100mm total - 2mm (1mm em cada lado) */
-  height: 28mm;          /* 30mm total - 2mm (1mm em cada lado) */
-  margin: 1mm auto !important;
-  padding: 0 !important;
-  overflow: hidden;
-  zoom: 0.98;
-  background: #fff;
-}
+    width: 100mm;
+    height: 30mm;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    zoom: 1.00;
+    background: #fff;
+  }
 
   /* mostra só a etiqueta */
   body * {
@@ -145,7 +145,7 @@ button {
 
   .print-only {
     position: absolute;
-    top: 0;
+    top: 1mm;
     left: 0;
     width: 100mm;
     height: 30mm;
