@@ -147,7 +147,7 @@ button {
     width: 98mm;
     height: 28mm;
     overflow: hidden;
-    margin: 1mm auto !important;
+    margin: 0 !important;
     padding: 0 !important;
     zoom: 0.98;
     background: #fff;
