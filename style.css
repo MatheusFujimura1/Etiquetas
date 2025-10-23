@@ -1,0 +1,73 @@
+
+@page {
+  size: 100mm 30mm;
+  margin: 0;
+}
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background: #f8f9fa;
+}
+label, input, button {
+  font-size: 16px;
+  margin: 4px;
+}
+button {
+  background: #2f57b7;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 6px 14px;
+  cursor: pointer;
+}
+.preview {
+  border: 1px solid #000;
+  width: 100mm;
+  height: 30mm;
+  background: #fff;
+  padding: 2mm 3mm;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  page-break-after: always;
+}
+.header, .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 3mm;
+}
+.header strong {
+  font-size: 3.5mm;
+}
+.desc {
+  text-align: center;
+  font-size: 3.2mm;
+  font-weight: 600;
+  margin: 0 auto;
+  word-wrap: break-word;
+  max-width: 90mm;
+}
+.barcode {
+  text-align: center;
+}
+.footer {
+  font-size: 3mm;
+  font-weight: 600;
+}
+@media print {
+  body * { visibility: hidden; }
+  .print-area, .print-area * { visibility: visible; }
+  .print-area { position: absolute; left: 0; top: 0; }
+  @page { size: 100mm 30mm; margin: 0; }
+}
