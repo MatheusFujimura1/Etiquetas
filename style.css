@@ -149,8 +149,8 @@ button {
     left: 0;
     width: 100mm;
     height: 30mm;
-    margin: 0;
-    padding: 1mm;
+    margin: 1mm;
+    padding: 0;
   }
 }
 
