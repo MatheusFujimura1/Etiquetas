@@ -1,0 +1,112 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Impressão de Etiquetas</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+<div class="app no-print">
+  <div class="controls">
+    <input id="codigo" type="text" placeholder="Código do material" />
+    <input id="qtd" type="number" min="1" value="1" />
+    <button id="gerar">Gerar</button>
+    <button id="imprimir">Imprimir</button>
+  </div>
+  <div id="status" class="status"></div>
+</div>
+
+<div class="print-area print-only">
+  <div id="label" class="label" style="display:none;">
+    <div class="top">
+      <div id="code" class="code"></div>
+      <div class="datetime">
+        <div id="date"></div>
+        <div id="time"></div>
+      </div>
+    </div>
+    <div id="desc" class="desc"></div>
+    <div class="bar">
+      <svg id="barcode"></svg>
+      <div id="bartext" class="bar-text"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+let base = [];
+
+async function carregarXLSX() {
+  const response = await fetch('Etiquetas.xlsx');
+  const data = await response.arrayBuffer();
+  const workbook = XLSX.read(data, { type: 'array' });
+  const sheet = workbook.Sheets[workbook.SheetNames[0]];
+  const json = XLSX.utils.sheet_to_json(sheet, { header: 1 });
+  const rows = json.slice(1);
+  base = rows.map(r => ({
+    CODIGO: String(r[0] || '').trim(),
+    TEXTO: String(r[1] || '').trim(),
+    PEC: String(r[2] || '').trim(),
+    ND: String(r[3] || '').trim()
+  }));
+  document.getElementById('status').textContent = `Base carregada: ${base.length} itens.`;
+}
+carregarXLSX();
+
+function dt(){
+  const d = new Date();
+  const p = n=>String(n).padStart(2,'0');
+  return { date: `${p(d.getDate())}/${p(d.getMonth()+1)}/${d.getFullYear()}`, time:`${p(d.getHours())}:${p(d.getMinutes())}` };
+}
+
+function fill(row){
+  const { date, time } = dt();
+  const lbl = document.getElementById('label');
+  document.getElementById('code').textContent = row.CODIGO || '';
+  document.getElementById('desc').textContent = row.TEXTO || '';
+  document.getElementById('date').textContent = date;
+  document.getElementById('time').textContent = time;
+  document.getElementById('bartext').textContent = `${row.PEC || ''}    ${row.ND || ''}`.trim();
+
+  JsBarcode("#barcode", String(row.CODIGO || ''), {
+    format: "CODE128",
+    width: 2,
+    height: 20,
+    displayValue: false,
+    margin: 0
+  });
+  lbl.style.display = 'grid';
+}
+
+window.matchMedia('print').addListener(mq => {
+  if (mq.matches) {
+    document.body.style.transform = 'scale(1.18)';
+    document.body.style.transformOrigin = 'top left';
+  } else {
+    document.body.style.transform = 'none';
+  }
+});
+
+document.getElementById('gerar').onclick = () => {
+  const cod = document.getElementById('codigo').value.trim();
+  const row = base.find(r => r.CODIGO === cod);
+  if(!row){
+    document.getElementById('status').textContent = 'Código não encontrado.';
+    document.getElementById('label').style.display = 'none';
+    return;
+  }
+  fill(row);
+  document.getElementById('status').textContent = 'Etiqueta pronta.';
+};
+
+document.getElementById('imprimir').onclick = () => {
+  const qtd = Math.max(1, parseInt(document.getElementById('qtd').value)||1);
+  for(let i=0;i<qtd;i++){ window.print(); }
+};
+</script>
+</body>
+</html>
