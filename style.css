@@ -119,23 +119,40 @@ button {
 
 /* ======== IMPRESSÃO ======== */
 @media print {
-  html, body {
-    zoom: 1.00; /* ESCALA REAL */
-    width: 100mm;
-    height: 30mm;
-    margin: 0 !important;
-    padding: 0 !important;
-    overflow: hidden;
+  @page {
+    size: 100mm 30mm;
+    margin: 0;
   }
 
-  body * { visibility: hidden; }
-  .print-only, .print-only * { visibility: visible; }
+  html, body {
+    width: 100mm;
+    height: 30mm;
+    overflow: hidden;
+    margin: 0 !important;
+    padding: 0 !important;
+    zoom: 1.00;
+    background: #fff;
+  }
+
+  /* mostra só a etiqueta */
+  body * {
+    visibility: hidden;
+  }
+
+  .print-only, .print-only * {
+    visibility: visible;
+  }
 
   .print-only {
     position: absolute;
-    inset: 0;
+    top: 0;
+    left: 0;
+    width: 100mm;
+    height: 30mm;
     margin: 0;
+    padding: 0;
   }
+}
 
   @page { size: 100mm 30mm; margin: 0 !important; }
 }
