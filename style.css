@@ -1,0 +1,168 @@
+
+@page { size: 100mm 30mm; margin: 0 !important; }
+
+:root {
+  --w: 100mm;
+  --h: 30mm;
+  --pad: 3.2mm;
+  --accent: #6d4aa2;
+  --font: "Segoe UI", Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: var(--font);
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+  background: #f6f7fb;
+}
+
+.app {
+  padding: 16px;
+  display: grid;
+  gap: 10px;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 8px;
+  align-items: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+input[type="text"], input[type="number"] {
+  height: 40px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 0 10px;
+  font-size: 16px;
+}
+
+button {
+  height: 40px;
+  background: var(--accent);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.status { font-size: 14px; color:#334155; text-align:center; }
+
+.print-area {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100vh;
+  padding-top: 1mm;
+}
+
+.label {
+  width: var(--w);
+  height: var(--h);
+  background: #fff;
+  border: 2px solid var(--accent);
+  border-radius: 6px;
+  padding: var(--pad);
+  display: grid;
+  grid-template-rows: auto auto 1fr auto;
+  gap: 1.5mm;
+  position: relative;
+}
+
+.top {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+}
+
+.code {
+  font-weight: 800;
+  font-size: 4mm;
+}
+
+.datetime {
+  text-align: right;
+  line-height: 1.05;
+  font-size: 3mm;
+  font-weight: 700;
+}
+
+.desc {
+  font-size: 3.2mm;
+  font-weight: 700;
+  white-space: normal;
+  word-break: break-word;
+}
+
+.bar {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+}
+
+.bar svg { align-self: flex-start; }
+
+.bar-text {
+  font-size: 3mm;
+  font-weight: 700;
+  margin-top: 0.5mm;
+  letter-spacing: 2mm;
+  margin-left: 2mm;
+}
+
+/* checkbox */
+.pj-check {
+  margin-left: 10px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+/* PJ mark on label */
+.pj-mark {
+  position: absolute;
+  right: 6mm;
+  bottom: 3mm;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+/* ======== IMPRESSÃO ======== */
+@media print {
+  @page {
+    size: 100mm 30mm;
+    margin: 0;
+  }
+
+  html, body {
+    width: 98mm;
+    height: 28mm;
+    overflow: hidden;
+    margin: 1mm auto !important;
+    padding: 0 !important;
+    zoom: 0.98;
+    background: #fff;
+  }
+
+  body * { visibility: hidden; }
+  .print-only, .print-only * { visibility: visible; }
+
+  .print-only {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100mm;
+    height: 30mm;
+    margin: 0;
+    padding: 0;
+  }
+}
