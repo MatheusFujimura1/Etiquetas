@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Impressão de Etiquetas</title>
+<link rel="stylesheet" href="style.css">
+<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.6/dist/JsBarcode.all.min.js"></script>
+</head>
+<body>
+<div class="container">
+  <h2>Impressão de Etiquetas</h2>
+  <label>Código:</label><br>
+  <input type="text" id="codigo" placeholder="Digite o código"><br>
+  <label>Quantidade:</label><br>
+  <input type="number" id="quantidade" value="1" min="1"><br>
+  <button id="buscar">Gerar etiqueta</button>
+  <button id="imprimir">Imprimir</button>
+  <div id="mensagem"></div>
+
+  <div id="print" class="print-area">
+    <div class="preview" id="etiqueta" style="display:none;">
+      <div class="header">
+        <div id="codigoView"></div>
+        <div>
+          <div id="dataView"></div>
+          <div id="horaView"></div>
+        </div>
+      </div>
+      <div class="desc" id="descView"></div>
+      <div class="barcode">
+        <svg id="barcode"></svg>
+      </div>
+      <div class="footer">
+        <div>PEÇ <span id="pecView"></span></div>
+        <div>ND <span id="ndView"></span></div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+async function carregarCSV() {
+  const resposta = await fetch('etiquetas.csv');
+  const texto = await resposta.text();
+  return texto.split(/\r?\n/).map(l => l.split(/[;,]/));
+}
+function formatarDataHora() {
+  const d = new Date();
+  const dia = String(d.getDate()).padStart(2, '0');
+  const mes = String(d.getMonth() + 1).padStart(2, '0');
+  const ano = d.getFullYear();
+  const hora = String(d.getHours()).padStart(2, '0');
+  const min = String(d.getMinutes()).padStart(2, '0');
+  return { data: `${dia}/${mes}/${ano}`, hora: `${hora}:${min}` };
+}
+let base = [];
+carregarCSV().then(linhas => base = linhas);
+
+document.getElementById('buscar').onclick = () => {
+  const cod = document.getElementById('codigo').value.trim();
+  const info = base.find(r => r[0] === cod);
+  if (!info) {
+    document.getElementById('mensagem').textContent = 'Código não encontrado.';
+    document.getElementById('etiqueta').style.display = 'none';
+    return;
+  }
+  const {data, hora} = formatarDataHora();
+  document.getElementById('codigoView').textContent = info[0];
+  document.getElementById('descView').textContent = info[1];
+  document.getElementById('pecView').textContent = info[2];
+  document.getElementById('ndView').textContent = info[3];
+  document.getElementById('dataView').textContent = data;
+  document.getElementById('horaView').textContent = hora;
+  JsBarcode("#barcode", info[0], {format:"CODE128", width:2, height:30, displayValue:false});
+  document.getElementById('etiqueta').style.display = 'block';
+  document.getElementById('mensagem').textContent = 'Etiqueta pronta.';
+};
+
+document.getElementById('imprimir').onclick = () => {
+  const qtd = parseInt(document.getElementById('quantidade').value) || 1;
+  for(let i=0; i<qtd; i++) {
+    window.print();
+  }
+};
+</script>
+</body>
+</html>
